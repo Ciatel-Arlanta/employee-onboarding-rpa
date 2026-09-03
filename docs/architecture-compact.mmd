@@ -1,0 +1,40 @@
+﻿flowchart LR
+    subgraph Inputs["1. Input Sources"]
+        direction TB
+        XLSX["<b>Employees.xlsx</b><br/>Candidate Records"]
+        TMPL["<b>Template.html</b><br/>A4 Corporate Letterhead"]
+    end
+
+    subgraph Robot["2. UiPath RPA Robot"]
+        direction TB
+        MAIN["<b>Main.xaml (Orchestrator)</b><br/>• Batch Ingestion & Loop<br/>• Idempotency Check<br/>• Excel Status Write-Back"]
+        WORKER["<b>ProcessEmployee.xaml (Worker)</b><br/>• Non-Halting Validation<br/>• Dynamic Token Injection<br/>• TryCatch Exception Safety"]
+        MAIN <-->|"Invokes / Reports"| WORKER
+    end
+
+    subgraph Services["3. External Engines"]
+        direction TB
+        EDGE["<b>Headless Chromium (Edge)</b><br/>CLI 1-Page PDF Engine"]
+        GMAIL["<b>Google Workspace API</b><br/>OAuth 2.0 Mail Connector"]
+    end
+
+    subgraph Outputs["4. Deliverables & Audit"]
+        direction TB
+        PDF["<b>Onboarding_Output/</b><br/>Personalized Welcome PDFs"]
+        EMAIL["<b>Candidate Inboxes</b><br/>Delivered Email + Attachment"]
+        AUDIT["<b>Updated Employees.xlsx</b><br/>Audit Status & Timestamps"]
+    end
+
+    Inputs ==> Robot
+    WORKER <==> Services
+    Robot ==> Outputs
+
+    classDef inStyle fill:#EBF8FF,stroke:#3182CE,stroke-width:2px,color:#2B6CB0;
+    classDef botStyle fill:#EDF2F7,stroke:#4A5568,stroke-width:2px,color:#2D3748;
+    classDef srvStyle fill:#FAF5FF,stroke:#805AD5,stroke-width:2px,color:#553C9A;
+    classDef outStyle fill:#C6F6D5,stroke:#38A169,stroke-width:2px,color:#22543D;
+
+    class XLSX,TMPL inStyle;
+    class MAIN,WORKER botStyle;
+    class EDGE,GMAIL srvStyle;
+    class PDF,EMAIL,AUDIT outStyle;
