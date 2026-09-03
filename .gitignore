@@ -1,0 +1,20 @@
+﻿# UiPath temporary and runtime cache folders
+.local/
+.tmh/
+.settings/
+.project/
+.templates/
+.objects/
+.entities/
+.codedworkflows/
+
+# Build and temporary files
+*.tmp
+*.log
+*.bak
+_backup/
+_screenshots/
+*.nupkg
+Thumbs.db
+[Dd]esktop.ini
+.DS_Store

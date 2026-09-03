@@ -1,0 +1,339 @@
+﻿<Activity mc:Ignorable="sap sap2010" x:Class="Main"
+  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+  xmlns:excel="clr-namespace:UiPath.Excel.Activities;assembly=UiPath.Excel.Activities"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib"
+  xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+  xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+  xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib"
+  xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib"
+  xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common"
+  xmlns:ui="http://schemas.uipath.com/workflow/activities"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <VisualBasic.Settings>
+    <x:Null />
+  </VisualBasic.Settings>
+  <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>GlobalVariablesNamespace</x:String>
+      <x:String>GlobalConstantsNamespace</x:String>
+      <x:String>System.ComponentModel</x:String>
+      <x:String>System.Runtime.Serialization</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+      <x:String>UiPath.Excel</x:String>
+      <x:String>UiPath.Excel.Activities</x:String>
+      <x:String>UiPath.DataTableUtilities</x:String>
+      <x:String>System.Reflection</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>System.Private.CoreLib</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Linq</AssemblyReference>
+      <AssemblyReference>System.Data.Common</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Drawing.Primitives</AssemblyReference>
+      <AssemblyReference>System.Drawing.Common</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System.Net.Mail</AssemblyReference>
+      <AssemblyReference>System.ObjectModel</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.TypeConverter</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.EventBasedAsync</AssemblyReference>
+      <AssemblyReference>Microsoft.Win32.Primitives</AssemblyReference>
+      <AssemblyReference>System.ComponentModel</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Primitives</AssemblyReference>
+      <AssemblyReference>System.Private.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization.Formatters</AssemblyReference>
+      <AssemblyReference>System.Private.DataContractSerialization</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization.Primitives</AssemblyReference>
+      <AssemblyReference>System.Private.Xml</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities.Design</AssemblyReference>
+      <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>System.Reflection.DispatchProxy</AssemblyReference>
+      <AssemblyReference>System.Reflection.TypeExtensions</AssemblyReference>
+      <AssemblyReference>System.Reflection.Metadata</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence DisplayName="Main Sequence" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="sd:DataTable" Name="dt_Employees" />
+      <Variable x:TypeArguments="x:String" Name="templatePath" Default="Data\Template.html" />
+      <Variable x:TypeArguments="x:String" Name="outputDir" Default="Onboarding_Output" />
+      <Variable x:TypeArguments="x:Int32" Name="successCount" Default="0" />
+      <Variable x:TypeArguments="x:Int32" Name="failedCount" Default="0" />
+      <Variable x:TypeArguments="x:Int32" Name="alreadyProcessedCount" Default="0" />
+      <Variable x:TypeArguments="x:Boolean" Name="isSuccess" />
+      <Variable x:TypeArguments="x:String" Name="errorMessage" />
+      <Variable x:TypeArguments="x:String" Name="empID" />
+      <Variable x:TypeArguments="x:String" Name="empName" />
+      <Variable x:TypeArguments="x:String" Name="empEmail" />
+      <Variable x:TypeArguments="x:String" Name="empDept" />
+      <Variable x:TypeArguments="x:String" Name="empStatus" />
+    </Sequence.Variables>
+    <ui:LogMessage DisplayName="Log Process Start" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;====================================================&quot;]" />
+    <ui:LogMessage DisplayName="Log Process Title" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;Starting Employee Onboarding Automation Process...&quot;]" />
+    <ui:LogMessage DisplayName="Log Process Divider" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;====================================================&quot;]" />
+
+    <!-- 1. Ensure Output Directory Exists -->
+    <ui:CreateDirectory ContinueOnError="{x:Null}" Output="{x:Null}" DisplayName="Create Output Directory" Path="[outputDir]" sap2010:WorkflowViewState.IdRef="CreateDirectory_1" />
+
+    <!-- 2. Read Employee Records from Excel -->
+    <ui:LogMessage DisplayName="Log Reading Data" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;Reading employee records from Data\Employees.xlsx (Sheet: Employees)...&quot;]" />
+    <excel:ReadRange AddHeaders="True" DataTable="[dt_Employees]" DisplayName="Read Range Workbook" Password="{x:Null}" Range="{x:Null}" SheetName="Employees" WorkbookPath="Data\Employees.xlsx" sap2010:WorkflowViewState.IdRef="ReadRange_1" />
+    <ui:LogMessage DisplayName="Log Total Rows" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;Total employee records to process: &quot; &amp; dt_Employees.Rows.Count.ToString()]" />
+
+    <!-- 3. Loop Through Records and Process Each Employee -->
+    <ui:ForEachRow ColumnNames="{x:Null}" CurrentIndex="{x:Null}" DataTable="[dt_Employees]" DisplayName="For Each Row in dt_Employees" sap2010:WorkflowViewState.IdRef="ForEachRow_1">
+      <ui:ForEachRow.Body>
+        <ActivityAction x:TypeArguments="sd:DataRow">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="sd:DataRow" Name="CurrentRow" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Row Processing Block" sap2010:WorkflowViewState.IdRef="Sequence_2">
+            <!-- Extract row values -->
+            <Assign DisplayName="Extract empID" sap2010:WorkflowViewState.IdRef="Assign_1">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[empID]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">[If(CurrentRow("EmpID") IsNot Nothing AndAlso Not IsDBNull(CurrentRow("EmpID")), CurrentRow("EmpID").ToString().Trim(), "")]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <Assign DisplayName="Extract empName" sap2010:WorkflowViewState.IdRef="Assign_2">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[empName]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">[If(CurrentRow("Name") IsNot Nothing AndAlso Not IsDBNull(CurrentRow("Name")), CurrentRow("Name").ToString().Trim(), "")]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <Assign DisplayName="Extract empEmail" sap2010:WorkflowViewState.IdRef="Assign_3">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[empEmail]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">[If(CurrentRow("Email") IsNot Nothing AndAlso Not IsDBNull(CurrentRow("Email")), CurrentRow("Email").ToString().Trim(), "")]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <Assign DisplayName="Extract empDept" sap2010:WorkflowViewState.IdRef="Assign_4">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[empDept]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">[If(CurrentRow("Department") IsNot Nothing AndAlso Not IsDBNull(CurrentRow("Department")), CurrentRow("Department").ToString().Trim(), "")]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <Assign DisplayName="Extract empStatus" sap2010:WorkflowViewState.IdRef="Assign_Status_1">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[empStatus]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">[If(CurrentRow.Table.Columns.Contains("Status") AndAlso CurrentRow("Status") IsNot Nothing AndAlso Not IsDBNull(CurrentRow("Status")), CurrentRow("Status").ToString().Trim(), "")]</InArgument>
+              </Assign.Value>
+            </Assign>
+
+            <!-- Check if already processed previously -->
+            <If Condition="[empStatus.Equals(&quot;Processed&quot;, StringComparison.OrdinalIgnoreCase)]" DisplayName="If Already Processed" sap2010:WorkflowViewState.IdRef="If_AlreadyProcessed_1">
+              <If.Then>
+                <Sequence DisplayName="Skip Previously Processed" sap2010:WorkflowViewState.IdRef="Sequence_Skip_1">
+                  <ui:LogMessage DisplayName="Log Already Processed" Level="Info" Message="[&quot;[SKIP] &quot; &amp; empID &amp; &quot; (&quot; &amp; empName &amp; &quot;): Already processed previously. Skipping.&quot;]" />
+                  <Assign DisplayName="alreadyProcessedCount + 1" sap2010:WorkflowViewState.IdRef="Assign_Skip_Count_1">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:Int32">[alreadyProcessedCount]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:Int32">[alreadyProcessedCount + 1]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                </Sequence>
+              </If.Then>
+              <If.Else>
+                <Sequence DisplayName="Execute Onboarding Sequence" sap2010:WorkflowViewState.IdRef="Sequence_Execute_1">
+                  <!-- Reset status variables before calling worker workflow -->
+                  <Assign DisplayName="Reset isSuccess" sap2010:WorkflowViewState.IdRef="Assign_Reset_1">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:Boolean">[isSuccess]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:Boolean">[False]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                  <Assign DisplayName="Reset errorMessage" sap2010:WorkflowViewState.IdRef="Assign_Reset_2">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:String">[errorMessage]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:String">[String.Empty]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+
+                  <TryCatch DisplayName="Try Catch Worker Invocation" sap2010:WorkflowViewState.IdRef="TryCatch_Row_1">
+                    <TryCatch.Try>
+                      <Sequence DisplayName="Invoke Worker Sequence" sap2010:WorkflowViewState.IdRef="Sequence_Worker_1">
+                        <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Invoke ProcessEmployee" LogEntry="No" LogExit="No" UnSafe="False" WorkflowFileName="ProcessEmployee.xaml" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1">
+                          <ui:InvokeWorkflowFile.Arguments>
+                            <InArgument x:TypeArguments="x:String" x:Key="in_EmpID">[empID]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="in_Name">[empName]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="in_Email">[empEmail]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="in_Department">[empDept]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="in_TemplatePath">[templatePath]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="in_OutputDir">[outputDir]</InArgument>
+                            <OutArgument x:TypeArguments="x:Boolean" x:Key="out_IsSuccess">[isSuccess]</OutArgument>
+                            <OutArgument x:TypeArguments="x:String" x:Key="out_ErrorMessage">[errorMessage]</OutArgument>
+                          </ui:InvokeWorkflowFile.Arguments>
+                        </ui:InvokeWorkflowFile>
+
+                        <!-- Tally Statistics & Update Row Status -->
+                        <If DisplayName="Check Processing Status" Condition="[isSuccess]" sap2010:WorkflowViewState.IdRef="If_1">
+                          <If.Then>
+                            <Sequence DisplayName="Increment Success &amp; Mark Processed" sap2010:WorkflowViewState.IdRef="Sequence_3">
+                              <Assign DisplayName="successCount + 1" sap2010:WorkflowViewState.IdRef="Assign_5">
+                                <Assign.To>
+                                  <OutArgument x:TypeArguments="x:Int32">[successCount]</OutArgument>
+                                </Assign.To>
+                                <Assign.Value>
+                                  <InArgument x:TypeArguments="x:Int32">[successCount + 1]</InArgument>
+                                </Assign.Value>
+                              </Assign>
+                              <Assign DisplayName="Update Status Processed" sap2010:WorkflowViewState.IdRef="Assign_Row_Status_1">
+                                <Assign.To>
+                                  <OutArgument x:TypeArguments="x:Object">[CurrentRow("Status")]</OutArgument>
+                                </Assign.To>
+                                <Assign.Value>
+                                  <InArgument x:TypeArguments="x:Object">["Processed"]</InArgument>
+                                </Assign.Value>
+                              </Assign>
+                              <Assign DisplayName="Update ProcessedDate Success" sap2010:WorkflowViewState.IdRef="Assign_Row_Date_1">
+                                <Assign.To>
+                                  <OutArgument x:TypeArguments="x:Object">[CurrentRow("ProcessedDate")]</OutArgument>
+                                </Assign.To>
+                                <Assign.Value>
+                                  <InArgument x:TypeArguments="x:Object">[DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")]</InArgument>
+                                </Assign.Value>
+                              </Assign>
+                            </Sequence>
+                          </If.Then>
+                          <If.Else>
+                            <Sequence DisplayName="Increment Failed &amp; Mark Error" sap2010:WorkflowViewState.IdRef="Sequence_4">
+                              <Assign DisplayName="failedCount + 1" sap2010:WorkflowViewState.IdRef="Assign_6">
+                                <Assign.To>
+                                  <OutArgument x:TypeArguments="x:Int32">[failedCount]</OutArgument>
+                                </Assign.To>
+                                <Assign.Value>
+                                  <InArgument x:TypeArguments="x:Int32">[failedCount + 1]</InArgument>
+                                </Assign.Value>
+                              </Assign>
+                              <Assign DisplayName="Update Status Failed" sap2010:WorkflowViewState.IdRef="Assign_Row_Status_2">
+                                <Assign.To>
+                                  <OutArgument x:TypeArguments="x:Object">[CurrentRow("Status")]</OutArgument>
+                                </Assign.To>
+                                <Assign.Value>
+                                  <InArgument x:TypeArguments="x:Object">["Failed: " &amp; errorMessage]</InArgument>
+                                </Assign.Value>
+                              </Assign>
+                              <Assign DisplayName="Update ProcessedDate Failed" sap2010:WorkflowViewState.IdRef="Assign_Row_Date_2">
+                                <Assign.To>
+                                  <OutArgument x:TypeArguments="x:Object">[CurrentRow("ProcessedDate")]</OutArgument>
+                                </Assign.To>
+                                <Assign.Value>
+                                  <InArgument x:TypeArguments="x:Object">[DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")]</InArgument>
+                                </Assign.Value>
+                              </Assign>
+                            </Sequence>
+                          </If.Else>
+                        </If>
+                      </Sequence>
+                    </TryCatch.Try>
+                    <TryCatch.Catches>
+                      <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch_Row_1">
+                        <ActivityAction x:TypeArguments="s:Exception">
+                          <ActivityAction.Argument>
+                            <DelegateInArgument x:TypeArguments="s:Exception" Name="rowEx" />
+                          </ActivityAction.Argument>
+                          <Sequence DisplayName="Handle Unhandled Row Fault" sap2010:WorkflowViewState.IdRef="Sequence_Fault_1">
+                            <Assign DisplayName="failedCount + 1 (Fault)" sap2010:WorkflowViewState.IdRef="Assign_7">
+                              <Assign.To>
+                                <OutArgument x:TypeArguments="x:Int32">[failedCount]</OutArgument>
+                              </Assign.To>
+                              <Assign.Value>
+                                <InArgument x:TypeArguments="x:Int32">[failedCount + 1]</InArgument>
+                              </Assign.Value>
+                            </Assign>
+                            <Assign DisplayName="Update Status Unhandled" sap2010:WorkflowViewState.IdRef="Assign_Row_Status_3">
+                              <Assign.To>
+                                <OutArgument x:TypeArguments="x:Object">[CurrentRow("Status")]</OutArgument>
+                              </Assign.To>
+                              <Assign.Value>
+                                <InArgument x:TypeArguments="x:Object">["Failed: " &amp; rowEx.Message]</InArgument>
+                              </Assign.Value>
+                            </Assign>
+                            <Assign DisplayName="Update ProcessedDate Fault" sap2010:WorkflowViewState.IdRef="Assign_Row_Date_3">
+                              <Assign.To>
+                                <OutArgument x:TypeArguments="x:Object">[CurrentRow("ProcessedDate")]</OutArgument>
+                              </Assign.To>
+                              <Assign.Value>
+                                <InArgument x:TypeArguments="x:Object">[DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")]</InArgument>
+                              </Assign.Value>
+                            </Assign>
+                            <ui:LogMessage DisplayName="Log Row Fault" Level="Error" Message="[&quot;[FAILED] &quot; &amp; empID &amp; &quot;: Unexpected fault - &quot; &amp; rowEx.Message]" />
+                          </Sequence>
+                        </ActivityAction>
+                      </Catch>
+                    </TryCatch.Catches>
+                  </TryCatch>
+                </Sequence>
+              </If.Else>
+            </If>
+          </Sequence>
+        </ActivityAction>
+      </ui:ForEachRow.Body>
+    </ui:ForEachRow>
+
+    <!-- 4. Write Updated DataTable with Status Back to Excel -->
+    <ui:LogMessage DisplayName="Log Saving Results" Level="Info" Message="[&quot;Writing updated Status and ProcessedDate back to Data\Employees.xlsx...&quot;]" />
+    <excel:WriteRange AddHeaders="True" DataTable="[dt_Employees]" DisplayName="Write Range Workbook" Password="{x:Null}" SheetName="Employees" StartingCell="A1" WorkbookPath="Data\Employees.xlsx" sap2010:WorkflowViewState.IdRef="WriteRange_1" />
+
+    <!-- 5. Final Execution Summary -->
+    <ui:LogMessage DisplayName="Log Finish Separator" sap2010:WorkflowViewState.IdRef="LogMessage_6" Level="Info" Message="[&quot;====================================================&quot;]" />
+    <ui:LogMessage DisplayName="Log Summary Report" sap2010:WorkflowViewState.IdRef="LogMessage_7" Level="Info" Message="[&quot;ONBOARDING COMPLETE | Total: &quot; &amp; dt_Employees.Rows.Count.ToString() &amp; &quot; | Newly Processed: &quot; &amp; successCount.ToString() &amp; &quot; | Previously Processed (Skipped): &quot; &amp; alreadyProcessedCount.ToString() &amp; &quot; | Failed/Invalid: &quot; &amp; failedCount.ToString()]" />
+    <ui:LogMessage DisplayName="Log Finish Separator 2" sap2010:WorkflowViewState.IdRef="LogMessage_8" Level="Info" Message="[&quot;====================================================&quot;]" />
+  </Sequence>
+</Activity>
