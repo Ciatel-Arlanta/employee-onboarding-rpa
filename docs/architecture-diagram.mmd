@@ -1,0 +1,78 @@
+﻿graph TB
+    subgraph Storage["Data & Assets"]
+        ExcelIn["Data/Employees.xlsx<br/>(Employee Records)"]:::data
+        Template["Data/Template.html<br/>(A4 Corporate Letterhead)"]:::data
+    end
+
+    subgraph Orchestrator["Orchestrator Layer: Main.xaml"]
+        Init["1. Initialize Output Directory<br/>(Onboarding_Output/)"]:::orch
+        ReadExcel["2. Read Range Workbook<br/>(dt_Employees)"]:::orch
+        Loop["3. For Each Row in dt_Employees"]:::orch
+        IdempotencyCheck{"Status == 'Processed'?"}:::decision
+        SkipRow["Log [SKIP]<br/>Increment Skip Counter"]:::skip
+        InvokeWorker["Invoke ProcessEmployee.xaml"]:::orch
+        TallyStats["Update Row Status & Metrics"]:::orch
+        WriteBack["4. Write Range Workbook<br/>(Save Status & Timestamps)"]:::orch
+        SummaryLog["5. Output Telemetry Summary Log"]:::orch
+    end
+
+    subgraph Worker["Worker Layer: ProcessEmployee.xaml"]
+        Validate{"Validate Mandatory Fields<br/>& Email Format (@, .)"}:::decision
+        ValidationFail["Set out_IsSuccess = False<br/>Log [SKIP] with reason"]:::skip
+        CreateFolder["Create Output Folder<br/>(Onboarding_Output/{EmpID}_{Name})"]:::work
+        TokenSub["Substitute Dynamic Tokens<br/>({{EmpID}}, {{Name}}, {{Dept}}, {{Date}})"]:::work
+        HeadlessPDF["Generate 1-Page PDF<br/>(Headless Microsoft Edge Engine)"]:::work
+        VerifyClean["Verify PDF Exists &<br/>Clean Temp HTML"]:::work
+        GSuiteSend["Dispatch Welcome Email<br/>(GSuite SendEmailConnections)"]:::work
+        TryCatch["Safety TryCatch Boundary<br/>(Catches System Exceptions)"]:::safety
+    end
+
+    subgraph External["External Engines & Services"]
+        Edge["Microsoft Edge CLI<br/>(--headless --no-pdf-header-footer)"]:::external
+        Gmail["Google Workspace / Gmail<br/>(OAuth 2.0 Integration Service)"]:::external
+    end
+
+    subgraph Results["Final Deliverables"]
+        PDFFile["Local PDF Artifact<br/>(Welcome_{EmpID}.pdf)"]:::output
+        EmailInbox["Delivered to Employee Inbox<br/>(With PDF Attachment)"]:::output
+        UpdatedExcel["Updated Data/Employees.xlsx<br/>(Processed / Failed Audit Trail)"]:::output
+    end
+
+    %% Data Flow
+    ExcelIn --> ReadExcel
+    ReadExcel --> Loop
+    Loop --> IdempotencyCheck
+    IdempotencyCheck -- Yes --> SkipRow
+    SkipRow --> Loop
+    IdempotencyCheck -- No --> InvokeWorker
+
+    InvokeWorker --> TryCatch
+    TryCatch --> Validate
+    Validate -- Invalid --> ValidationFail
+    ValidationFail --> TallyStats
+
+    Validate -- Valid --> CreateFolder
+    Template --> TokenSub
+    CreateFolder --> TokenSub
+    TokenSub --> HeadlessPDF
+    HeadlessPDF <--> Edge
+    HeadlessPDF --> VerifyClean
+    VerifyClean --> GSuiteSend
+    GSuiteSend <--> Gmail
+    VerifyClean --> PDFFile
+    GSuiteSend --> EmailInbox
+
+    GSuiteSend --> TallyStats
+    TallyStats --> Loop
+    Loop -- Complete --> WriteBack
+    WriteBack --> UpdatedExcel
+    WriteBack --> SummaryLog
+
+    classDef data fill:#EBF8FF,stroke:#3182CE,stroke-width:2px,color:#2B6CB0;
+    classDef orch fill:#EDF2F7,stroke:#4A5568,stroke-width:2px,color:#2D3748;
+    classDef work fill:#E6FFFA,stroke:#319795,stroke-width:2px,color:#234E52;
+    classDef decision fill:#FEFCBF,stroke:#D69E2E,stroke-width:2px,color:#744210;
+    classDef skip fill:#FEEBC8,stroke:#DD6B20,stroke-width:2px,color:#7B341E;
+    classDef external fill:#FAF5FF,stroke:#805AD5,stroke-width:2px,color:#553C9A;
+    classDef output fill:#C6F6D5,stroke:#38A169,stroke-width:2px,color:#22543D;
+    classDef safety fill:#FFF5F5,stroke:#E53E3E,stroke-width:2px,color:#742A2A;

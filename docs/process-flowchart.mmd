@@ -1,0 +1,64 @@
+﻿flowchart TD
+    Start([Start Automation]) --> EnsureDir["1. Ensure Output Directory Exists: Onboarding_Output/"]
+    EnsureDir --> ReadExcel["2. Read Data/Employees.xlsx into dt_Employees"]
+    ReadExcel --> LogStart["3. Log Process Start & Total Row Count"]
+    LogStart --> ForEachRow{"For Each Row in dt_Employees"}
+
+    ForEachRow -- Next Row --> ExtractData["Extract: EmpID, Name, Email, Dept, Status"]
+    ExtractData --> CheckProcessed{"Status == 'Processed'?"}
+    
+    CheckProcessed -- Yes --> LogSkipAlready["Log [SKIP]: Already processed previously"]
+    LogSkipAlready --> IncAlready["Increment alreadyProcessedCount"]
+    IncAlready --> ForEachRow
+
+    CheckProcessed -- No --> ResetVars["Reset isSuccess = False, errorMessage = ''"]
+    ResetVars --> CallWorker["Invoke ProcessEmployee.xaml"]
+
+    subgraph WorkerFlow["ProcessEmployee.xaml (Worker Workflow)"]
+        Validate{"Mandatory Fields Present<br/>AND Email contains '@' and '.'?"}
+        
+        Validate -- No --> SetInvalid["Set out_IsSuccess = False<br/>out_ErrorMessage = Format Reason"]
+        SetInvalid --> LogSkipReason["Log [SKIP] with reason"]
+
+        Validate -- Yes --> MakeFolder["Create Directory: Onboarding_Output/{EmpID}_{Name}"]
+        MakeFolder --> ReadTmpl["Read Data/Template.html"]
+        ReadTmpl --> SubTokens["Replace {{EmpID}}, {{Name}}, {{Department}}, {{Date}}"]
+        SubTokens --> WriteTemp["Write Populated temp_welcome.html"]
+        WriteTemp --> RunEdge["Invoke Headless Edge Engine<br/>--headless --no-pdf-header-footer"]
+        RunEdge --> VerifyPDF{"PDF Created Successfully?"}
+        VerifyPDF -- Yes --> DelTemp["Delete temp_welcome.html"]
+        VerifyPDF -- No --> ThrowFault["Catch / System Error"]
+        DelTemp --> SendGSuite["uga:SendEmailConnections (GSuite)<br/>Send Welcome Email + Attach PDF"]
+        SendGSuite --> SetValid["Set out_IsSuccess = True<br/>out_ErrorMessage = ''"]
+        SetValid --> LogSuccess["Log [SUCCESS]: Onboarded & Email Sent"]
+    end
+
+    CallWorker --> WorkerFlow
+    LogSkipReason --> CheckSuccess
+    ThrowFault --> CheckSuccess
+    LogSuccess --> CheckSuccess
+
+    CheckSuccess{"isSuccess == True?"}
+    CheckSuccess -- Yes --> MarkSuccess["CurrentRow('Status') = 'Processed'<br/>CurrentRow('ProcessedDate') = Now<br/>successCount++"]
+    CheckSuccess -- No --> MarkFail["CurrentRow('Status') = 'Failed: ' + errorMessage<br/>CurrentRow('ProcessedDate') = Now<br/>failedCount++"]
+
+    MarkSuccess --> ForEachRow
+    MarkFail --> ForEachRow
+
+    ForEachRow -- All Rows Processed --> WriteExcel["4. excel:WriteRange<br/>Write updated dt_Employees back to Employees.xlsx"]
+    WriteExcel --> LogSummary["5. Log Summary Report:<br/>Total, Newly Processed, Skipped, Failed"]
+    LogSummary --> End([End Automation])
+
+    classDef startend fill:#2B6CB0,stroke:#2A4365,stroke-width:2px,color:#FFFFFF;
+    classDef step fill:#EDF2F7,stroke:#4A5568,stroke-width:1.5px,color:#2D3748;
+    classDef decision fill:#FEFCBF,stroke:#B7791F,stroke-width:2px,color:#744210;
+    classDef success fill:#C6F6D5,stroke:#2F855A,stroke-width:2px,color:#22543D;
+    classDef skip fill:#FEEBC8,stroke:#DD6B20,stroke-width:2px,color:#7B341E;
+    classDef fail fill:#FED7D7,stroke:#C53030,stroke-width:2px,color:#742A2A;
+
+    class Start,End startend;
+    class EnsureDir,ReadExcel,LogStart,ExtractData,ResetVars,CallWorker,MakeFolder,ReadTmpl,SubTokens,WriteTemp,RunEdge,DelTemp,SendGSuite,WriteExcel,LogSummary step;
+    class ForEachRow,CheckProcessed,Validate,VerifyPDF,CheckSuccess decision;
+    class SetValid,LogSuccess,MarkSuccess success;
+    class LogSkipAlready,IncAlready,LogSkipReason skip;
+    class SetInvalid,ThrowFault,MarkFail fail;
